@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container-xxl bd-gutter mt-3 my-md-4 bd-layout">
+    <h1 style="align-items: center;text-align: center">My paginator</h1>
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Sex</th>
+            <th scope="col">studentNo</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for student in student_page.object_list %}
+            <tr>
+                <th scope="row">{{ student_page.start_index|add:forloop.counter0 }}</th>
+                <td>{{ student.name }}</td>
+                <td>{{ student.age }}</td>
+                <td>{{ student.get_sex_display }}</td>
+                <td>{{ student.studentNo }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+    <ul class="pagination">
+        {#    首页#}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">HOME</a>
+        </li>
+        {#    首页#}
+
+        {% if student_page.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ student_page.previous_page_number }}">Previous</a>
+            </li>
+
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Previous</a>
+            </li>
+        {% endif %}
+        {#上一页#}
+
+        {% for page in PageRANGE %}
+            {% if page == student_page.number %}
+                {#current page#}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                </li>
+            {% else %}
+                <li class="page-item" aria-current="page">
+                    <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                </li>
+            {% endif %}
+
+        {% endfor %}
+
+
+        {#下一页#}
+        {% if student_page.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ student_page.next_page_number }}">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        {% endif %}
+        {#   末页#}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ student_page.paginator.num_pages }}">END</a>
+        </li>
+        {#    末页#}
+
+        {#        <span style="width: 20px"></span>#}
+        <span style="justify-content: center;display: flex;align-items: center;padding-left: 10px">总共{{ student_page.paginator.num_pages }}页  </span>
+        <span style="justify-content: center;display: flex;align-items: center;padding-left: 10px">当前{{ student_page.number }}页  </span>
+
+    </ul>
+</div>
+</body>
+</html>
